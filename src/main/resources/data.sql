@@ -1,0 +1,18 @@
+-- CREATE TABLE public.grocery_item
+-- (
+--     id bigint PRIMARY KEY NOT NULL,
+--     aisle integer,
+--     category varchar(20),
+--     item_name varchar(20),
+--     price double precision
+-- );
+-- INSERT INTO public.grocery_item (id, aisle, category, item_name, price) VALUES (-2, 18, 'Food', 'Doughnut', 5.99);
+--
+-- CREATE TABLE public.grocery_user
+-- (
+--     id bigint PRIMARY KEY NOT NULL,
+--     password varchar(20),
+--     real_name varchar(30),
+--     username varchar(10)
+-- );
+INSERT INTO public.grocery_user (id, password, real_name, username) VALUES (-1, 'Hello1234', 'Rohan Ayub', 'RohanRA');
