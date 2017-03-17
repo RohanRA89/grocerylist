@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,7 +56,7 @@ public class GroceryRestController {
         String foundName = found.getRealName();
         String signInResponse = null;
 
-        if (password.equals(userPassword)) {
+        if (password.equals(userPassword)  && groceryItems.findByListName(listName) == null) {
             GroceryItem createItem = new GroceryItem();
             createItem.setItemName(itemName);
             createItem.setListName(listName);
@@ -63,6 +64,33 @@ public class GroceryRestController {
             createItem.setAisle(aisle);
             createItem.setPrice(price);
             groceryItems.save(createItem);
+
+            List<GroceryItem> groceryList = new ArrayList<>();
+            groceryList.add(createItem);
+
+            found.setGroceryList(groceryList);
+            groceryUsers.save(found);
+
+
+            signInResponse = "Sign in successful " + foundName + "!\nYour item was created sucessfully and was added to your list "+listName;
+            return signInResponse;
+        }
+
+            else if (password.equals(userPassword) && groceryItems.findByListName(listName) != null){
+            GroceryItem createItem = new GroceryItem();
+            createItem.setItemName(itemName);
+            createItem.setCategory(category);
+            createItem.setAisle(aisle);
+            createItem.setPrice(price);
+            groceryItems.save(createItem);
+
+
+            List<GroceryItem> groceryList = found.getGroceryList();
+            groceryList.add(createItem);
+
+            found.setGroceryList(groceryList);
+            groceryUsers.save(found);
+
 
             signInResponse = "Sign in successful " + foundName + "!\nYour item was created sucessfully and was added to your list "+listName;
             return signInResponse;
@@ -76,7 +104,7 @@ public class GroceryRestController {
         GroceryUser found = groceryUsers.findByUsername(username);
         String userPassword = found.getPassword();
         String foundName = found.getRealName();
-        Iterable<GroceryItem> foundItems = (Iterable<GroceryItem>) groceryItems.findByListName(listName);
+        GroceryItem foundItems = groceryItems.findByListName(listName);
 
         String signInResponse = null;
 
@@ -85,9 +113,22 @@ public class GroceryRestController {
             return signInResponse;
         }
         else if (password.equals(userPassword) && foundItems != null) {
-            String displayList = foundItems.toString();
-
-            signInResponse = "Welcome " + foundName + "!\nHere are your list of items:\n " + displayList;
+            List<GroceryItem> getList = found.getGroceryList();
+            String showListName = foundItems.getListName();
+//            Integer listSize = getList.size();
+//            int x = 0;
+//           while(x <= listSize){
+//            String itemName = foundItems.getItemName();
+//            String categoryName = foundItems.getCategory();
+//            Integer aisleNumber = foundItems.getAisle();
+//            Double price = foundItems.getPrice();
+//
+//            String displayList = String.format("Item Name: %s\nItem Category: %s\nItem Aisle: "+aisleNumber+"\nItem Price: "+price,itemName,categoryName);
+//
+//
+//            signInResponse = "Welcome " + foundName + "!\nHere are your list of items:\n " + displayList;
+//            listSize--;}
+            signInResponse = "List Name: "+showListName+ getList.toString();
             return signInResponse;
         }
         {

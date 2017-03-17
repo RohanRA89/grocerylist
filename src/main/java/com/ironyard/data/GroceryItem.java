@@ -68,9 +68,9 @@ public class GroceryItem {
 
     @Override
     public String toString() {
-        return "itemName: " + itemName +
-                "\ncategory: " + category +
-                "\naisle: " + aisle +
-                "\nprice: $" + price;
+        return "\n-Item Name: " + itemName +
+                "\n-Category: " + category +
+                "\n-Aisle: " + aisle +
+                "\n-Price: $" + price;
     }
 }
